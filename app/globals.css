@@ -1,26 +1,266 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out;
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      -webkit-text-fill-color: transparent;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 
+  Variable Definitions using HSL values 
+  Note: In v4, we don't need wrapping layer directives for root variables generally, 
+  but putting them in :root is standard.
+*/
+
+:root {
+  /* "Deep Ink & Neon" Palette - Light Mode (Paper Style) */
+  --background: 240 20% 98%;
+  /* Slightly cool white */
+  --foreground: 240 10% 3.9%;
+  /* Deep ink black */
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+
+  --primary: 255 60% 50%;
+  /* Deep Indigo */
+  --primary-foreground: 0 0% 98%;
+
+  --secondary: 270 50% 96%;
+  /* Light Lavender */
+  --secondary-foreground: 255 60% 50%;
+
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+
+  --accent: 255 60% 50%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 255 60% 50%;
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  /* "Deep Ink & Neon" Palette - Dark Mode */
+  --background: 260 40% 5%;
+  /* Extremely deep purple/black */
+  --foreground: 210 40% 98%;
+
+  --card: 260 40% 8%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 260 40% 8%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 260 100% 65%;
+  /* Electric Purple/Indigo */
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 260 30% 15%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 260 30% 15%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 260 30% 15%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 260 30% 15%;
+  --input: 260 30% 15%;
+  --ring: 260 100% 65%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary selection:text-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Text Glow */
+  .text-glow {
+    text-shadow: 0 0 30px rgba(120, 100, 255, 0.5);
+  }
+
+  /* Noise Texture */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  /* Grid Background */
+  .bg-grid-white {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+
+  /* Glassmorphism */
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-md border border-white/5 shadow-xl;
+  }
+
+  /* Stamp Specific Effects */
+  .stamp-paper {
+    background-color: #f3f3f3;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+
+  .engraved-text {
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5), 0px -1px 0px rgba(0, 0, 0, 0.7);
+  }
+
+  .embossed-box {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3), inset -1px -1px 2px rgba(255, 255, 255, 0.1), 5px 5px 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 3D STAMP ANIMATIONS */
+@keyframes stamp-pump {
+  0% {
+    transform: perspective(1000px) translateZ(300px) translateY(-150px) rotateX(10deg);
+    opacity: 0;
+  }
+
+  10% {
+    transform: perspective(1000px) translateZ(300px) translateY(-150px) rotateX(10deg);
+    opacity: 1;
+  }
+
+  /* Anticipation - lift slightly */
+  30% {
+    transform: perspective(1000px) translateZ(350px) translateY(-180px) rotateX(15deg);
+  }
+
+  /* Fast down stroke */
+  50% {
+    transform: perspective(1000px) translateZ(0px) translateY(0px) rotateX(0deg) scale(0.95);
+  }
+
+  /* Settle/Impact */
+  60% {
+    transform: perspective(1000px) translateZ(0px) translateY(0px) rotateX(0deg) scale(1);
+  }
+
+  /* Hold slightly */
+  70% {
+    transform: perspective(1000px) translateZ(0px) translateY(0px) rotateX(0deg) scale(1);
+  }
+
+  /* Lift off smooth */
+  100% {
+    transform: perspective(1000px) translateZ(300px) translateY(-150px) rotateX(10deg);
+    opacity: 0;
+  }
+}
+
+@keyframes paper-impression {
+
+  0%,
+  100% {
+    box-shadow: none;
+    filter: none;
+  }
+
+  30%,
+  45% {
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 -2px 8px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.1);
+    filter: brightness(0.92) contrast(1.08);
+  }
+}
+
+.stamp-handle-3d {
+  position: absolute;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.stamp-handle-3d.pumping {
+  animation: stamp-pump 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.paper-impression-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.paper-impression-wrapper.impressing {
+  animation: paper-impression 1.4s ease forwards;
+}
+
+/* Embossed Seal Effect for placed stamps */
+.embossed-seal {
+  filter:
+    drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.4)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.2));
+}
+
+.embossed-seal img {
+  filter:
+    brightness(0.95) contrast(1.15) drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3)) drop-shadow(-0.5px -0.5px 0.5px rgba(255, 255, 255, 0.8));
 }
