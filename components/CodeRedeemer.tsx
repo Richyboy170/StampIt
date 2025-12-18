@@ -1,5 +1,5 @@
 'use client'
-
+// hello world
 import { useState } from "react"
 import { redeemCode } from "@/app/actions/economy"
 import { Loader2, CheckCircle2, Ticket } from "lucide-react"
